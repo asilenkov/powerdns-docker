@@ -1,7 +1,7 @@
 FROM alpine
 MAINTAINER Artem Silenkov <artem.silenkov@gmail.com>
 
-ENV POWERDNS_VERSION=4.1.3 \
+ENV POWERDNS_VERSION=4.0.8 \
     MYSQL_AUTOCONF=true \
     MYSQL_HOST="mysql" \
     MYSQL_PORT="3306" \
