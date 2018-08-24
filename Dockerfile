@@ -1,7 +1,7 @@
 FROM alpine
 MAINTAINER Artem Silenkov <artem.silenkov@gmail.com>
 
-ENV POWERDNS_VERSION=4.0.0 \
+ENV POWERDNS_VERSION=4.1.3 \
     MYSQL_AUTOCONF=true \
     MYSQL_HOST="mysql" \
     MYSQL_PORT="3306" \
@@ -12,8 +12,14 @@ ENV POWERDNS_VERSION=4.0.0 \
 RUN apk --update add mysql-client mariadb-dev libpq sqlite-libs libstdc++ libgcc && \
     apk add --virtual build-deps \
       g++ make mariadb-dev postgresql-dev sqlite-dev curl boost-dev && \
-    curl -sSL https://downloads.powerdns.com/releases/pdns-$POWERDNS_VERSION.tar.bz2 | tar xj -C /tmp && \
-    cd /tmp/pdns-$POWERDNS_VERSION && \
+      mkdir /tmp/pdns && \
+    curl -sSL https://downloads.powerdns.com/releases/pdns-$POWERDNS_VERSION.tar.bz2 | tar xj -C /tmp
+    
+
+COPY libressl-2.7.patch /tmp/pdns-$POWERDNS_VERSION
+
+RUN cd /tmp/pdns-$POWERDNS_VERSION && \
+    patch -p1 < libressl-2.7.patch && \
     ./configure --prefix="" --exec-prefix=/usr --sysconfdir=/etc/pdns \
       --with-modules="bind gmysql gpgsql gsqlite3" --without-lua && \
     make && make install-strip && cd / && \
