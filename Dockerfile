@@ -32,6 +32,6 @@ RUN cd /tmp/pdns-$POWERDNS_VERSION && \
 ADD schema.sql pdns.conf /etc/pdns/
 ADD entrypoint.sh /
 
-EXPOSE 53/tcp 53/udp
+EXPOSE 54/tcp 54/udp
 
 ENTRYPOINT ["/entrypoint.sh"]
